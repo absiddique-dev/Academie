@@ -3,9 +3,14 @@ import {View, StatusBar, StyleSheet, BackHandler, Alert} from 'react-native';
 import {WebView} from 'react-native-webview';
 
 const App = () => {
-  const WEBVIEW_ENDPOINT = 'https://google.com';
+  const WEBVIEW_ENDPOINT = 'https://academie-app.vercel.app/dashboard';
   const webViewRef = useRef();
   const navigationStateRef = React.useRef({canGoBack: false});
+
+  let downloadDocument = async downloadUrl => {
+    let fileURI = await downloadAsync(downloadUrl, `${documentDirectory}`, {});
+    await onShare(fileURI.uri);
+  };
 
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -51,9 +56,16 @@ const App = () => {
         setBuiltInZoomControls={false}
         domStorageEnabled={true}
         javaScriptEnabled={true}
+        allowFileAccess={true}
+        allowUniversalAccessFromFileURLs={true}
+        allowingReadAccessToURL={true}
+        mixedContentMode="always"
         cacheEnabled={true}
         overScrollMode={'never'}
         cacheMode={'LOAD_NO_CACHE'}
+        onFileDownload={({nativeEvent: {downloadUrl}}) =>
+          downloadDocument(downloadUrl)
+        }
         onShouldStartLoadWithRequest={request => {
           if (!request.url.startsWith(WEBVIEW_ENDPOINT)) {
             Linking.openURL(request.url);
