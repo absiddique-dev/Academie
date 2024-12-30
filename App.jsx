@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import {View, StatusBar, StyleSheet, BackHandler, Alert} from 'react-native';
 import {WebView} from 'react-native-webview';
+import {Linking} from 'react-native';
 
 const App = () => {
   const WEBVIEW_ENDPOINT = 'https://academie-app.vercel.app/dashboard';
@@ -58,7 +59,6 @@ const App = () => {
         javaScriptEnabled={true}
         allowFileAccess={true}
         allowUniversalAccessFromFileURLs={true}
-        allowingReadAccessToURL={true}
         mixedContentMode="always"
         cacheEnabled={true}
         overScrollMode={'never'}
