@@ -6,7 +6,7 @@ import {Linking} from 'react-native';
 import {PermissionsAndroid, Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 const App = () => {
-  const WEBVIEW_ENDPOINT = 'https://academie-app.vercel.app/dashboard';
+  const WEBVIEW_ENDPOINT = 'https://academie-app.vercel.app/';
   const webViewRef = useRef();
   const navigationStateRef = React.useRef({canGoBack: false});
 
@@ -34,21 +34,6 @@ const App = () => {
 
     return () => backHandler.remove();
   }, []);
-
-  // to get permission
-  // const requestStoragePermission = async () => {
-  //   if (Platform.OS === 'android') {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-  //       {
-  //         title: 'Storage Permission Required',
-  //         message: 'This app needs access to your storage to download files.',
-  //       },
-  //     );
-  //     return granted === PermissionsAndroid.RESULTS.GRANTED;
-  //   }
-  //   return true; // No need for permission on iOS
-  // };
 
   const requestStoragePermission = async () => {
     if (Platform.OS !== 'android') return true;
@@ -219,7 +204,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#00ACEF" />
+      <StatusBar barStyle="light-content" backgroundColor="#063654" />
       <WebView
         ref={webViewRef}
         viewportContent={'width=device-width, user-scalable=no'}
@@ -231,7 +216,7 @@ const App = () => {
           'upi:*',
         ]}
         startInLoadingState={true}
-        source={{uri: WEBVIEW_ENDPOINT}}
+        source={{uri: 'https://academie-app.vercel.app/dashboard'}}
         onMessage={onMessage}
         thirdPartyCookiesEnabled={true}
         setBuiltInZoomControls={false}
@@ -243,9 +228,6 @@ const App = () => {
         cacheEnabled={true}
         overScrollMode={'never'}
         cacheMode={'LOAD_NO_CACHE'}
-        // onFileDownload={({nativeEvent: {downloadUrl}}) =>
-        //   downloadDocument(downloadUrl)
-        // }
         onShouldStartLoadWithRequest={request => {
           if (!request.url.startsWith(WEBVIEW_ENDPOINT)) {
             Linking.openURL(request.url);
