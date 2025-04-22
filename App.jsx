@@ -1,10 +1,12 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, StatusBar, StyleSheet, BackHandler, Alert} from 'react-native';
 import {WebView} from 'react-native-webview';
 import {Linking} from 'react-native';
 //
 import {PermissionsAndroid, Platform} from 'react-native';
 import RNFS from 'react-native-fs';
+// for splash screen
+import SplashScreen from 'react-native-splash-screen';
 const App = () => {
   const WEBVIEW_ENDPOINT = 'https://academie-app.vercel.app/';
   const webViewRef = useRef();
@@ -202,6 +204,14 @@ const App = () => {
     }
   };
 
+  // to use hide splash screen
+  const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
+  useEffect(() => {
+    if (isWebViewLoaded) {
+      SplashScreen.hide();
+    }
+  }, [isWebViewLoaded]);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#063654" />
@@ -217,6 +227,7 @@ const App = () => {
         ]}
         startInLoadingState={true}
         source={{uri: 'https://academie-app.vercel.app/dashboard'}}
+        onLoad={() => setIsWebViewLoaded(true)} // Hide splash screen when WebView loads
         onMessage={onMessage}
         thirdPartyCookiesEnabled={true}
         setBuiltInZoomControls={false}
